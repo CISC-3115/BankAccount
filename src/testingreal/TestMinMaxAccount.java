@@ -57,14 +57,17 @@ public class TestMinMaxAccount {
         MinMaxAccount account = new MinMaxAccount("123456", new MonetaryValue(100.00));
         System.out.println(account); // expected: 123456 $100.00 [min=$100.00, max=$100.00]
 
-        account.deposit(new MonetaryValue(50.00));
+        boolean result = account.deposit(new MonetaryValue(50.00));
+        System.out.println(result);  // expected: true
         System.out.println(account); // expected: 123456 $150.00 [min=$100.00, max=$150.00]
 
-        account.deposit(new MonetaryValue(50.00));
+        result = account.deposit(new MonetaryValue(50.00));
+        System.out.println(result);  // expected: true
         System.out.println(account); // expected: 123456 $200.00 [min=$100.00, max=$200.00]
 
         // attempt to deposit a negative amount
-        account.deposit(new MonetaryValue(-50.00));
+        result = account.deposit(new MonetaryValue(-50.00));
+        System.out.println(result);  // expected: false
         System.out.println(account); // expected: 123456 $200.00 [min=$100.00, max=$200.00]
 
         System.out.println();
@@ -76,18 +79,22 @@ public class TestMinMaxAccount {
         MinMaxAccount account = new MinMaxAccount("123456", new MonetaryValue(100.00));
         System.out.println(account); // expected: 123456 $100.00 [min=$100.00, max=$100.00]
 
-        account.withdraw(new MonetaryValue(50.00));
+        boolean result = account.withdraw(new MonetaryValue(50.00));
+        System.out.println(result); // expected: true
         System.out.println(account); // expected: 123456 $50.00 [min=$50.00, max=$100.00]
 
-        account.withdraw(new MonetaryValue(25.00));
+        result = account.withdraw(new MonetaryValue(25.00));
+        System.out.println(result); // expected: true
         System.out.println(account); // expected: 123456 $25.00 [min=$25.00, max=$100.00]
 
         // attempt to withdraw a negative amount
-        account.withdraw(new MonetaryValue(-10.00));
+        result = account.withdraw(new MonetaryValue(-10.00));
+        System.out.println(result); // expected: false
         System.out.println(account); // expected: 123456 $25.00 [min=$25.00, max=$100.00]
 
         // attempt to make the balance go below $0.00
-        account.withdraw(new MonetaryValue(50.00));
+        result = account.withdraw(new MonetaryValue(50.00));
+        System.out.println(result); // expected: false
         System.out.println(account); // expected: 123456 $25.00 [min=$25.00, max=$100.00]
 
         System.out.println();
@@ -115,7 +122,22 @@ public class TestMinMaxAccount {
     	System.out.println(account.getBalance()); // expected: $125.00
     	System.out.println(account.getMin());     // expected: $50.00
     	System.out.println(account.getMax());     // expected: $125.00
-
+    	
+    	account.withdraw(new MonetaryValue(25.00));
+    	System.out.println(account.getBalance()); // expected: $100.00
+    	System.out.println(account.getMin());     // expected: $50.00
+    	System.out.println(account.getMax());     // expected: $125.00
+    	
+    	account.withdraw(new MonetaryValue(25.00));
+    	System.out.println(account.getBalance()); // expected: $75.00
+    	System.out.println(account.getMin());     // expected: $50.00
+    	System.out.println(account.getMax());     // expected: $125.00
+    	
+    	account.withdraw(new MonetaryValue(50.00));
+    	System.out.println(account.getBalance()); // expected: $25.00
+    	System.out.println(account.getMin());     // expected: $25.00
+    	System.out.println(account.getMax());     // expected: $125.00
+    	
     	System.out.println();
     }
 }

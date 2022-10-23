@@ -1,4 +1,3 @@
-
 package testingreal;
 
 public class MinMaxAccount extends BankAccount {
@@ -37,16 +36,19 @@ public class MinMaxAccount extends BankAccount {
     @Override
     public String toString() {
 
-        return super.toString() + " "  + "{min=" + low + "," + "max=" + high + "}";
+        return super.toString() + " " + "[min=" + low + "," + "max=" + high + "] ";
 
     }
 
     @Override
     public boolean deposit(MonetaryValue amount) {
-        super.deposit(amount);
 
-        low = getMin();
-        high = getMax();
+        if (super.deposit(amount) == true) {
+            low = getMin();
+            high = getMax();
+            return true;
+
+        }
 
         return false;
 
@@ -54,10 +56,13 @@ public class MinMaxAccount extends BankAccount {
 
     @Override
     public boolean withdraw(MonetaryValue amount) {
-        super.withdraw(amount);
 
-        low = getMin();
-        high = getMax();
+        if (super.withdraw(amount) == true) {
+            low = getMin();
+            high = getMax();
+            return true;
+
+        }
 
         return false;
 
